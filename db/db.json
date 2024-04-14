@@ -1,0 +1,22 @@
+{
+  "contatos": [
+    {
+      "id": "704d",
+      "nome": "Teste 1",
+      "email": "teste1@email.com",
+      "telefone": "98989898"
+    },
+    {
+      "id": "b1d6",
+      "nome": "Teste 2",
+      "email": "teste2@email.com",
+      "telefone": "98989898"
+    },
+    {
+      "id": "6bc6",
+      "nome": "Teste 3",
+      "email": "teste3@email.com",
+      "telefone": "98989898"
+    }
+  ]
+}

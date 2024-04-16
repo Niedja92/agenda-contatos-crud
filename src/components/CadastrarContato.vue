@@ -2,7 +2,7 @@
   <div>
     <h2>Cadastrar Novo Contato</h2>
     <form @submit.prevent="addContato">
-      <label for="nome">Nome:</label>
+      <label for="nome">Nome</label>
       <input type="text" name="nome" v-model="novoContato.nome" required />
       <label for="email">Email</label>
       <input type="text" name="email" v-model="novoContato.email" required />
@@ -36,8 +36,16 @@ export default {
     this.addContato();
   },
   methods: {
+    // 'GET'
+    async carregarContatos() {
+      const request = await fetch("http://localhost:3000/contatos");
+      const data = await request.json();
+      console.log(data);
+    },
+
+    // 'POST'
     async addContato() {
-      await fetch("http://localhost:3000/contatos", {
+      await fetch("http://localhost:3000/contatos/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,6 +55,7 @@ export default {
         .then((response) => response.json())
         .then((contato) => {
           this.contatos.push(contato); // adicionar os elementos aos campos
+
           // limpa os campos após adicionar Novo Contato
           (this.novoContato.nome = ""),
             (this.novoContato.email = ""),
@@ -61,10 +70,47 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  padding-bottom: 20px;
+}
+div {
+  padding: 30px;
+}
+
 form,
 h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+label {
+  padding: 10px;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  width: 300px;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+  margin-top: 20px;
+  padding: 10px;
+  width: 320px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1233eb;
+  color: #fff;
+  transition: 1s;
+  font-size: 16px;
+}
+
+button:hover,
+button:focus {
+  background: #4760ed;
 }
 </style>

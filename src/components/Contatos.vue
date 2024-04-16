@@ -1,18 +1,24 @@
 <template>
   <div>
     <h2>Lista de Contatos</h2>
-    <ul>
-      <li v-for="contato in contatos" :key="contato.id">
-        <p>Nome: {{ contato.nome }}</p>
-        <p>Email: {{ contato.email }}</p>
-        <p>Telefone: {{ contato.telefone }}</p>
-        <button>Editar</button>
-        <button type="submit" @click="excluirContato(contato.id)">
-          Excluir
-        </button>
-      </li>
-    </ul>
-    <button @click="carregarContatos">Carregar contatos</button>
+    <div>
+      <ul>
+        <li v-for="contato in contatos" :key="contato.id">
+          <p>Nome: {{ contato.nome }}</p>
+          <p>Email: {{ contato.email }}</p>
+          <p>Telefone: {{ contato.telefone }}</p>
+          <div class="btn">
+            <button>Editar</button>
+            <button @click="excluirContato(contato.id)">Excluir</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-div">
+      <button class="btn-carregar" @click.prevent="carregarContatos">
+        Carregar contatos
+      </button>
+    </div>
   </div>
 </template>
 
@@ -28,22 +34,20 @@ export default {
       contatos: [],
     };
   },
+  mounted() {
+    this.carregarContatos();
+  },
   methods: {
+    // 'GET'
     async carregarContatos() {
       await fetch("http://localhost:3000/contatos")
-        .then((response) => response.json())
-        .then((response) => {
-          this.contatos = response; // usamos o this para mostrar estas informações na interface
-          console.log(response);
+        .then((r) => r.json())
+        .then((r) => {
+          this.contatos = r; // usamos o this para mostrar estas informações na interface
+          console.log(r);
         });
-
-      // Pode ser feita como a função acima ou esta abaixo
-      // async carregarContatos() {
-      // const response = await fetch("http://localhost:3000/contatos");
-      // const data = await response.json();
-      // console.log(data);
-      // this.contatos = data;
     },
+    //'DELETE'
     async excluirContato(id) {
       await fetch(`http://localhost:3000/contatos/${id}`, {
         method: "DELETE",
@@ -54,19 +58,75 @@ export default {
         .catch((error) => {
           console.log("Erro ao tentar excluir contato:", error);
         });
+      this.carregarContatos(); // após executar o o excluirContato, atualiza os permanecem
     },
-  },
-  mounted() {
-    this.carregarContatos();
   },
 };
 </script>
 
 <style scoped>
+h2 {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
   margin: 20px;
+  list-style-type: none;
+}
+
+li {
+  border: 1px solid #000;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  background-color: #e5e1e1;
+  padding: 10px;
+  width: 400px;
+}
+
+p {
+  padding: 5px;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+button {
+  margin: 0 10px;
+  cursor: pointer;
+  padding: 5px;
+  border: 1px solid #1233eb;
+  border-radius: 4px;
+  color: #1233eb;
+}
+
+button:hover,
+button:focus {
+  background: #b9c0ed;
+}
+
+.btn-carregar:hover,
+.btn-carregar:hover {
+  background: #576ae3;
+  color: #000;
+  border: none;
+}
+
+.btn-carregar {
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+
+.btn-div {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
 }
 </style>
